@@ -11,17 +11,19 @@ from .models import Question
 #     return HttpResponse('pybo')
 
 
-
+# 질문 목록을 보여주는 index 함수
 def index(request):
     question_list = Question.objects.order_by('-create_date')  # 최신 질문 순으로 정렬
     context = {'question_list': question_list}  # 템플릿에 전달할 데이터
     return render(request, 'pybo/question_list.html', context)
 
+# 질문 상세 페이지를 보여주는 detail 함수
 def detail(request, question_id):
     question = get_object_or_404(Question, pk=question_id)  # 질문 ID로 질문 객체 가져오기
     context = {'question': question}
     return render(request, 'pybo/question_detail.html', context)  # 질문 상세 페이지 렌더링
 
+# 답변을 생성하는 answer_create 함수
 def answer_create(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
     answer = question.answer_set.create(content=request.POST.get('content'), create_date=timezone.now())  # 답변 생성
