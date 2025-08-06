@@ -2,3 +2,21 @@
 <div>
     {{ question.content }}
 </div>
+
+<h4> 댓글 </h4>
+<h5>{{ question.answer_set.count }}개의 답변이 있습니다.</h5>
+<div>
+    <ul>
+    {% for answer in question.answer_set.all %}
+        <li>{{ answer.content }}</li>
+    {% endfor %}
+    </ul>
+</div>
+
+<p>작성일: {{ question.create_date }}</p>
+<form action="{% url 'pybo:answer_create' question.id %}" method="post">
+    {% csrf_token %}
+    <label for="content">답변 내용</label><br>
+    <textarea name="content" id="content" rows="10" cols="80" placeholder="여기에 답변을 입력하세요."></textarea><br>
+    <button type="submit">답변 등록</button>
+</form>
